@@ -30,15 +30,15 @@
 import sys, socket, ssl
 
 if len(sys.argv) != 3:
-    print "Usage: {0} <ssid> <password>".format(sys.argv[0])
+    print("Usage: {0} <ssid> <password>".format(sys.argv[0]))
     exit(1)
 
 ssid = sys.argv[1][0:32]
 passwd = sys.argv[2][0:64]
 
-onboard_packet = '\x86\x00\x00\x34\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x31\x01\x00\x00\x02'
-onboard_packet += ssid.ljust(32, '\x00')
-onboard_packet += passwd.ljust(64, '\x00')
+onboard_packet = b'\x86\x00\x00\x34\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x31\x01\x00\x00\x02'
+onboard_packet += ssid.ljust(32, '\x00').encode('utf-8')
+onboard_packet += passwd.ljust(64, '\x00').encode('utf-8')
 # 0x01 == OPEN
 # 0x02 == WEP_PSK (allegedly not supported)
 # 0x03 == WPA_TKIP_PSK
@@ -46,7 +46,7 @@ onboard_packet += passwd.ljust(64, '\x00')
 # 0x05 == WPA2_AES_PSK
 # 0x06 == WPA2_TKIP_PSK
 # 0x07 == WPA2_MIXED_PSK
-onboard_packet += '\x05'
+onboard_packet += b'\x05'
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -55,5 +55,5 @@ sock = ctx.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
 sock.connect(('172.16.0.1', 56700))
 sock.write(onboard_packet)
 
-print "LIFX bulb probably onboarded.  Best of luck ;-)"
+print("LIFX bulb probably onboarded.  Best of luck ;-)")
 
