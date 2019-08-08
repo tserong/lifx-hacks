@@ -15,6 +15,8 @@
 #   the final value appended to onboard_packet appropriately.
 # - This script has been tested three or four times on one LIFX Original
 #   and one LIFX Color 1000 bulb.  It worked fine for me, but use at own risk.
+# - If you get an SSL error, try temporarily setting MinProtocol = TLSv1.0
+#   in /etc/ssl/openssl.cnf (https://github.com/tserong/lifx-hacks/issues/2)
 #
 # Interesting commentary:
 # - Both LIFX original and LIFX Color 1000 bulbs seem happy to take the
