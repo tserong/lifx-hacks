@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Author: Tim Serong <tim@wirejunkie.com>
 #
@@ -37,6 +37,13 @@ if len(sys.argv) != 3:
 
 ssid = sys.argv[1][0:32]
 passwd = sys.argv[2][0:64]
+
+print("Will attempt to onboard using\n"
+      "  ssid: {0}\n"
+      "  password: {1}".format(ssid, passwd))
+response = input("Continue? [y/N] ")
+if not response or response[0] not in ['Y', 'y']:
+    exit(1)
 
 onboard_packet = b'\x86\x00\x00\x34\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x31\x01\x00\x00\x02'
 onboard_packet += ssid.ljust(32, '\x00').encode('utf-8')
