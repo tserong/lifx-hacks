@@ -60,6 +60,11 @@ onboard_packet += b'\x05'
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+ctx.minimum_version = ssl.TLSVersion.TLSv1
+#ctx.set_ciphers('@SECLEVEL=0:ALL')
+ctx.set_ciphers('@SECLEVEL=0:TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-GCM-SHA256:ECDH+AESGCM:ECDH+CHACHA20:DH+AESGCM:DH+CHACHA20:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+HIGH:DH+HIGH:RSA+AESGCM:RSA+AES:RSA+HIGH:!aNULL:!eNULL:!MD5:!3DES')
+#ctx.set_ciphers('@SECLEVEL=0:AES256-SHA')
+ctx.options |= 0x4 # OP_LEGACY_SERVER_CONNECT
 sock = ctx.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
 sock.connect(('172.16.0.1', 56700))
 sock.write(onboard_packet)
