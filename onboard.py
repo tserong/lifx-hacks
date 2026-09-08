@@ -60,6 +60,8 @@ onboard_packet += b'\x05'
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+#ctx.options |= ssl.OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION # source: https://docs.openssl.org/3.0/man3/SSL_CTX_set_options/
+ctx.options |= 0x40000 # bypass the missing Python attribute by passing the OpenSSL integer value directly
 sock = ctx.wrap_socket(socket.socket(socket.AF_INET, socket.SOCK_STREAM))
 sock.connect(('172.16.0.1', 56700))
 sock.write(onboard_packet)
